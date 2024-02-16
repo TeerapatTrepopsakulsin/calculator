@@ -18,7 +18,9 @@ class Keypad(ttk.Frame):
         options = {'font': ('Georgia', 21)}
         sticky = {'sticky': tk.NSEW}
         pad = {'padx': 2, 'pady': 3}
+
         frame = ttk.Frame(self)
+
         for i in range(len(self.keynames)):
             num_button = tk.Button(frame, text=self.keynames[i], fg="Green", **options)
             row = i // columns
@@ -27,10 +29,12 @@ class Keypad(ttk.Frame):
             self.buttons.append(num_button)
 
         frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
+
         for i in range(len(self.keynames)//columns):
             frame.rowconfigure(i, weight=1)
         for i in range(columns):
             frame.columnconfigure(i, weight=1)
+
         return frame
 
     def create_math_symbol_button(self):
@@ -48,6 +52,8 @@ class Keypad(ttk.Frame):
         for i in range(len(math_sym)):
             frame.rowconfigure(i, weight=1)
         frame.columnconfigure(0, weight=1)
+
+        #self.pack(expand=True, fill=tk.BOTH)
         return frame
 
     def init_components(self, columns) -> None:
@@ -57,10 +63,7 @@ class Keypad(ttk.Frame):
         rows as needed.
         :param columns: number of columns to use
         """
-        num_frame = self.create_button(columns)
-        sym_frame = self.create_math_symbol_button()
-        num_frame.pack(side=tk.LEFT, expand=True, fill=tk.BOTH)
-        sym_frame.pack(side=tk.RIGHT, expand=True, fill=tk.BOTH)
+        pass
 
     def bind(self, sequence, handler, add=''):
         """Bind an event handler to an event sequence."""
