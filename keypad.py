@@ -22,7 +22,7 @@ class Keypad(ttk.Frame):
         frame = ttk.Frame(self)
 
         for i in range(len(self.keynames)):
-            num_button = tk.Button(frame, text=self.keynames[i], fg="Green", **options)
+            num_button = tk.Button(frame, text=self.keynames[i], fg="Black", **options)
             row = i // columns
             col = i % columns
             num_button.grid(row=row, column=col, **pad, **sticky)
@@ -37,25 +37,6 @@ class Keypad(ttk.Frame):
 
         return frame
 
-    def create_math_symbol_button(self):
-        options = {'font': ('Georgia', 15)}
-        sticky = {'sticky': tk.NSEW}
-        pad = {'padx': 3, 'pady': 2}
-        frame = ttk.Frame(self)
-        math_sym = ['*', '/', '+', '-', '^', '=']
-        for i in range(len(math_sym)):
-            sym_button = tk.Button(frame, text=math_sym[i], fg="Blue", **options)
-            row = i
-            sym_button.grid(row=row, column=0, **pad, **sticky)
-            self.buttons.append(sym_button)
-
-        for i in range(len(math_sym)):
-            frame.rowconfigure(i, weight=1)
-        frame.columnconfigure(0, weight=1)
-
-        #self.pack(expand=True, fill=tk.BOTH)
-        return frame
-
     def init_components(self, columns) -> None:
         """Create a keypad of keys using the keynames list.
         The first keyname is at the top left of the keypad and
@@ -68,7 +49,7 @@ class Keypad(ttk.Frame):
     def bind(self, sequence, handler, add=''):
         """Bind an event handler to an event sequence."""
         for button in self.buttons:
-            button.bind(sequence, handler)
+            button.bind(sequence, handler, add)
 
     def __setitem__(self, key, value) -> None:
         """Overrides __setitem__ to allow configuration of all buttons
@@ -78,7 +59,7 @@ class Keypad(ttk.Frame):
         sets the font color on all buttons to red.
         """
         for button in self.buttons:
-            button.configure({key: value})
+            button.configure(key=value)
 
     def __getitem__(self, key):
         """Overrides __getitem__ to allow reading of configuration values
@@ -86,7 +67,7 @@ class Keypad(ttk.Frame):
         Example: keypad['foreground'] would return 'red' if the button
         foreground color is 'red'.
         """
-        pass
+        return self.buttons[0].config(key)[-1]
 
     def configure(self, cnf=None, **kwargs):
         """Apply configuration settings to all buttons.
@@ -101,7 +82,6 @@ class Keypad(ttk.Frame):
     # e.g. keypad.frame.configure(background='blue')
 
 
-
 if __name__ == '__main__':
     sticky = {'sticky': 'NSEW'}
     keys = list('789456123 0.')  # = ['7','8','9',...]
@@ -110,5 +90,6 @@ if __name__ == '__main__':
     root.title("Keypad Demo")
     keypad = Keypad(root, keynames=keys, columns=3)
     keypad.pack(expand=True, fill=tk.BOTH)
-    keypad.frame.configure()
+    print(keypad['foreground'])
+    # keypad.frame.configure(foreground='blue')
     root.mainloop()
