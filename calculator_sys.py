@@ -1,6 +1,7 @@
 import importlib
 from enum import Enum
 from math import *
+import warnings
 
 
 class HistorySystem:
@@ -17,13 +18,13 @@ class CalculatingSystem:
         self.result = ''
         self.history_sys = history_sys
 
-    def eval(self) -> str:
+    def evaluate(self) -> str:
         if not self.for_eval:
             self.history_sys.history.append(['0', '0'])
             return '0'
         try:
             result = eval(''.join(self.for_eval))
-        except SyntaxError:
+        except Exception:
             return ''
         else:
             self.result = f'{result:.12g}'
@@ -35,3 +36,6 @@ class CalculatingSystem:
         self.for_eval = []
         self.equation = ''
         self.result = ''
+
+
+warnings.simplefilter('ignore')
