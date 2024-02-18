@@ -29,10 +29,11 @@ class CalculatorUI(tk.Tk):
 
     def handle_func_press(self, *args):
         _func = MathFunctions.get(self.function.get())[0]
-        if self.label['text'][-1].isdecimal():
+        if self.label['text'] and self.label['text'][-1].isdecimal():
             self.label['text'] = _func + self.label['text'] + ')'
         else:
             self.label['text'] += _func
+        self.focus_set()
         self.function.set('Functions')
         self.controller.handle_func_press(_func)
 
@@ -94,11 +95,9 @@ class CalculatorUI(tk.Tk):
         self.label.grid(row=1, column=0, columnspan=3, **sticky)
 
         # combobox
-        self.combobox = ttk.Combobox(self, textvariable=self.function, foreground='gray', **font)
-        self.combobox.grid(row=2, column=0, **sticky)
-
         func_for_cal = [i.value[0] for i in MathFunctions]
-        self.combobox.configure(values=func_for_cal)
+        self.combobox = ttk.Combobox(self, textvariable=self.function, values=func_for_cal, state='readonly', **font)
+        self.combobox.grid(row=2, column=0, **sticky)
 
         self.combobox.bind_all('<<ComboboxSelected>>', self.handle_func_press)
 
@@ -126,4 +125,14 @@ class CalculatorUI(tk.Tk):
 
 
 if __name__ == '__main__':
-    import main
+    from itertools import chain
+
+
+    def get_events(widget):
+        return set(chain.from_iterable(widget.bind_class(cls) for cls in widget.bindtags()))
+
+
+    root = tk.Tk()
+    a = get_events(ttk.Combobox())
+    print(a)
+    root.destroy()

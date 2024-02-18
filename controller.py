@@ -1,5 +1,5 @@
-from calculator.calculator_sys import CalculatingSystem
 import tkinter as tk
+from calculator_sys import CalculatingSystem
 from math_functions import MathOperators
 
 
@@ -14,7 +14,7 @@ class Controller:
         self.calculator.for_eval.append(MathOperators.get(event.widget['text'])[1])
 
     def handle_func_press(self, *args):
-        if self.calculator.for_eval[-1].isdecimal():
+        if self.calculator.for_eval and self.calculator.for_eval[-1].isdecimal():
             self.calculator.for_eval = [*args] + self.calculator.for_eval + [')']
         else:
             self.calculator.for_eval += [*args]
@@ -23,8 +23,7 @@ class Controller:
         self.calculator.clear()
 
     def handle_dlt_press(self, *args):
-        self.calculator.for_eval.pop()
-        while self.calculator.for_eval and self.calculator.for_eval[-1].isalpha():
+        while len(self.calculator.for_eval) >= 1 and self.calculator.for_eval[-1].isalpha():
             self.calculator.for_eval.pop()
 
     def handle_calculate(self, *args):
