@@ -28,14 +28,14 @@ class CalculatorUI(tk.Tk):
         self.controller.handle_op_press(event)
 
     def handle_func_press(self, *args):
-        _func = MathFunctions.get(self.function.get())[0]
+        _func = MathFunctions.get(self.function.get())
         if self.label['text'] and self.label['text'][-1].isdecimal():
-            self.label['text'] = _func + self.label['text'] + ')'
+            self.label['text'] = _func[0] + self.label['text'] + ')'
         else:
-            self.label['text'] += _func
+            self.label['text'] += _func[0]
         self.focus_set()
         self.function.set('Functions')
-        self.controller.handle_func_press(_func)
+        self.controller.handle_func_press(_func[1])
 
     def handle_clr_press(self, *args):
         self.label.configure(text='', foreground='yellow')

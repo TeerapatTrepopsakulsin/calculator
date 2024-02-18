@@ -30,7 +30,7 @@ class MathOperators(Enum):
 class MathFunctions(Enum):
     # FUNCTION = [for button, in label, for eval]
     EXP = ['exp', 'exp(', 'exp(']
-    LN = ['ln', 'log(', 'log(']
+    LN = ['ln', 'ln(', 'log(']
     LOG10 = ['log10', 'log10(', 'log10(']
     LOG2 = ['log2', 'log2(', 'log2(']
     SQRT = ['sqrt', 'sqrt(', 'sqrt(']
