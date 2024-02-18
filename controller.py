@@ -1,3 +1,4 @@
+"""Controller module, use for invoking calculating system"""
 import tkinter as tk
 from calculator_sys import CalculatingSystem
 from math_functions import MathOperators
@@ -34,6 +35,6 @@ class Controller:
         return result
 
     def get_last_history(self):
-        last_history = self.calculator.history_sys.history[-1]
+        last_history = self.calculator.history_sys[-1]
         last_history_text = '\n' + last_history[0] + '\n = ' + last_history[1] + '\n'
         return last_history_text
