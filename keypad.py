@@ -1,17 +1,15 @@
-import tkinter
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
 
 
 class Keypad(ttk.Frame):
-
     def __init__(self, parent, keynames=[], columns=1, **kwargs):
         super().__init__(parent, **kwargs)
         # keynames and columns
+        self.frame = self
         self.keynames = keynames
         self.buttons = []
-        self.frame = self.init_components(columns)
+        self.init_components(columns)
 
     def init_components(self, columns):
         """Create a keypad of keys using the keynames list.
@@ -42,10 +40,10 @@ class Keypad(ttk.Frame):
 
         return frame
 
-    def bind(self, sequence, handler, add=''):
+    def bind(self, sequence, func, add=''):
         """Bind an event handler to an event sequence."""
         for button in self.buttons:
-            button.bind(sequence, handler, add)
+            button.bind(sequence, func, add)
 
     def __setitem__(self, key, value) -> None:
         """Overrides __setitem__ to allow configuration of all buttons
@@ -55,7 +53,7 @@ class Keypad(ttk.Frame):
         sets the font color on all buttons to red.
         """
         for button in self.buttons:
-            button.configure(key=value)
+            button.configure({key: value})
 
     def __getitem__(self, key):
         """Overrides __getitem__ to allow reading of configuration values
@@ -71,11 +69,8 @@ class Keypad(ttk.Frame):
         To configure properties of the frame that contains the buttons,
         use `keypad.frame.configure()`.
         """
-
-    # TODO Write a property named 'frame' the returns a reference to
-    # the the superclass object for this keypad.
-    # This is so that a programmer can set properties of a keypad's frame,
-    # e.g. keypad.frame.configure(background='blue')
+        for button in self.buttons:
+            button.configure(cnf, **kwargs)
 
 
 if __name__ == '__main__':
@@ -86,6 +81,7 @@ if __name__ == '__main__':
     root.title("Keypad Demo")
     keypad = Keypad(root, keynames=keys, columns=3)
     keypad.pack(expand=True, fill=tk.BOTH)
+    keypad['foreground'] = 'red'
     print(keypad['foreground'])
-    # keypad.frame.configure(foreground='blue')
+    keypad.frame.configure(foreground='blue', background='green')
     root.mainloop()
