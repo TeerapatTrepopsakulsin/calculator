@@ -19,16 +19,17 @@ class CalculatingSystem:
 
     def eval(self) -> str:
         if not self.for_eval:
+            self.history_sys.history.append(['0', '0'])
             return '0'
         try:
             result = eval(''.join(self.for_eval))
         except SyntaxError:
             return ''
         else:
-            self.result = f'{result}'
+            self.result = f'{result:.12g}'
             self.history_sys.history.append([self.equation, self.result])
-            self.for_eval = list(f'{result}')
-            return f'{result}'
+            self.for_eval = list(f'{result:.12g}')
+            return f'{result:.12g}'
 
     def clear(self):
         self.for_eval = []
