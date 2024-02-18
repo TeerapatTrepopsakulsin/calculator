@@ -1,12 +1,14 @@
+"""UI for calculator programme"""
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 from winsound import MessageBeep, SND_NOWAIT
 from keypad import Keypad
-from math_functions import *
+from math_functions import MathOperators, MathFunctions
 from controller import Controller
 
 
 class CalculatorUI(tk.Tk):
+    """Class of the UI of the calculator"""
     def __init__(self, controller: Controller):
         super().__init__()
         self.title("Calculator")
@@ -17,14 +19,23 @@ class CalculatorUI(tk.Tk):
         self.init_components()
 
     def handle_num_press(self, event: tk.Event):
+        """Method which executed when pressing number button.
+        Display the number.
+        """
         self.label['text'] += event.widget['text']
         self.controller.handle_num_press(event)
 
     def handle_op_press(self, event: tk.Event):
+        """Method which executed when pressing operator button.
+        Display the operator.
+        """
         self.label['text'] += MathOperators.get(event.widget['text'])[0]
         self.controller.handle_op_press(event)
 
     def handle_func_press(self, *args):
+        """Method which executed when select function from combobox.
+        Display the function.
+        """
         _func = MathFunctions.get(self.function.get())
         if self.label['text'] and self.label['text'][-1].isdecimal():
             self.label['text'] = _func[0] + self.label['text'] + ')'
@@ -35,10 +46,16 @@ class CalculatorUI(tk.Tk):
         self.controller.handle_func_press(_func[1])
 
     def handle_clr_press(self, *args):
+        """Method which executed when pressing CLR button.
+        Clears the input.
+        """
         self.label.configure(text='', foreground='yellow')
         self.controller.handle_clr_press()
 
     def handle_dlt_press(self, *args):
+        """Method which executed when pressing DEL button.
+        Delete the last input value.
+        """
         self.label['text'] = self.label['text'][:-1]
         while self.label['text'] and self.label['text'][-1].isalpha():
             self.label['text'] = self.label['text'][:-1]
@@ -47,6 +64,12 @@ class CalculatorUI(tk.Tk):
         self.controller.handle_dlt_press()
 
     def handle_eq_press(self, *args):
+        """Method which executed when pressing equal button.
+        valuate wherever is shown on the display.
+        If the expression is valid, then add it to the history.
+        If the expression is invalid, then change the color of the display,
+        make a sound, but don't add it to the history.
+        """
         result = self.controller.handle_calculate(self.label['text'])
         if not result:
             self.label.configure(foreground='red')
@@ -117,7 +140,3 @@ class CalculatorUI(tk.Tk):
     def run(self):
         """start the app, wait for events"""
         self.mainloop()
-
-
-if __name__ == '__main__':
-    import main
