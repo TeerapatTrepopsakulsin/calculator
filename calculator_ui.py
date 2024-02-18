@@ -1,12 +1,9 @@
 import tkinter as tk
-from tkinter import ttk, Grid
+from tkinter import ttk, scrolledtext
 from winsound import MessageBeep, SND_NOWAIT
-from calculator.keypad import Keypad
-from calculator.math_functions import *
-from calculator.controller import Controller
-from calculator.calculator_sys import CalculatingSystem, HistorySystem
-import time
-import pyautogui
+from keypad import Keypad
+from math_functions import *
+from controller import Controller
 
 
 class CalculatorUI(tk.Tk):
@@ -56,6 +53,10 @@ class CalculatorUI(tk.Tk):
             MessageBeep(SND_NOWAIT)
         else:
             self.label.configure(foreground='yellow', text=result)
+            history_text = self.controller.get_last_history()
+            self.history_box.configure(state='normal')
+            self.history_box.insert(0.0, history_text)
+            self.history_box.configure(state='disabled')
 
     def init_components(self):
         """Create components and layout the UI."""
@@ -103,15 +104,9 @@ class CalculatorUI(tk.Tk):
 
         self.function.set('Functions')
 
-        # scroll bar & text
-
-        self.history_box = tk.Text(self, height=10, width=20, yscrollcommand='yes')
-        # self.history_box.create_text(text)
-        self.history_box.grid(row=0, column=0, columnspan=2, **sticky)
-
-        self.scrollbar = ttk.Scrollbar(self, takefocus=self.history_box, orient='vertical', command='yscrollcommand')
-        # self.scrolbar
-        self.scrollbar.grid(row=0, column=2, **sticky)
+        # scrolledText
+        self.history_box = scrolledtext.ScrolledText(self,height=5, width=10, font=('Segoe UI Black', 21), state='disabled')
+        self.history_box.grid(row=0, column=0, columnspan=3, **sticky)
 
         # fill the window
         for i in range(5):
@@ -125,14 +120,4 @@ class CalculatorUI(tk.Tk):
 
 
 if __name__ == '__main__':
-    from itertools import chain
-
-
-    def get_events(widget):
-        return set(chain.from_iterable(widget.bind_class(cls) for cls in widget.bindtags()))
-
-
-    root = tk.Tk()
-    a = get_events(ttk.Combobox())
-    print(a)
-    root.destroy()
+    import main

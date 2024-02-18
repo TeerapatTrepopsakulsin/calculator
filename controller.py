@@ -23,10 +23,17 @@ class Controller:
         self.calculator.clear()
 
     def handle_dlt_press(self, *args):
-        while len(self.calculator.for_eval) >= 1 and self.calculator.for_eval[-1].isalpha():
+        if self.calculator.for_eval:
+            self.calculator.for_eval.pop()
+        while self.calculator.for_eval and self.calculator.for_eval[-1].isalpha():
             self.calculator.for_eval.pop()
 
     def handle_calculate(self, *args):
         self.calculator.equation = str(*args)
-        result = self.calculator.eval()
+        result = self.calculator.evaluate()
         return result
+
+    def get_last_history(self):
+        last_history = self.calculator.history_sys.history[-1]
+        last_history_text = '\n' + last_history[0] + '\n = ' + last_history[1] + '\n'
+        return last_history_text
