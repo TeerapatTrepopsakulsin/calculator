@@ -8,34 +8,29 @@ class HistorySystem:
         self.name = 'History'
         self.history = []
 
-    def clear(self):
-        self.history = []
-
 
 class CalculatingSystem:
     def __init__(self, history_sys: HistorySystem):
         self.name = 'Calculator'
         self.equation = ''
+        self.for_eval = []
         self.result = ''
         self.history_sys = history_sys
 
     def eval(self) -> str:
+        if not self.for_eval:
+            return '0'
         try:
-            result = eval(self.equation)
-        except TypeError:
+            result = eval(''.join(self.for_eval))
+        except SyntaxError:
             return ''
         else:
             self.result = f'{result}'
             self.history_sys.history.append([self.equation, self.result])
+            self.for_eval = list(f'{result}')
             return f'{result}'
 
     def clear(self):
+        self.for_eval = []
         self.equation = ''
         self.result = ''
-        self.history_sys.clear()
-
-
-if __name__ == '__main__':
-    text = "log8(8)"
-    print(eval(text))
-    print('Hello, world!')
