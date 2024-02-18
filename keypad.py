@@ -1,8 +1,10 @@
+"""Keypad module"""
 import tkinter as tk
 from tkinter import ttk
 
 
 class Keypad(ttk.Frame):
+    """Keypad class which inherit from tkinter Frame"""
     def __init__(self, parent, keynames=[], columns=1, **kwargs):
         super().__init__(parent, **kwargs)
         # keynames and columns
@@ -21,11 +23,12 @@ class Keypad(ttk.Frame):
         options = {'font': ('Georgia', 21)}
         sticky = {'sticky': tk.NSEW}
         pad = {'padx': 2, 'pady': 3}
+        color = {'fg': "Black", 'bg': 'white'}
 
         frame = ttk.Frame(self)
 
         for i in range(len(self.keynames)):
-            num_button = tk.Button(frame, text=self.keynames[i], fg="Black", **options)
+            num_button = tk.Button(frame, text=self.keynames[i], **color, **options)
             row = i // columns
             col = i % columns
             num_button.grid(row=row, column=col, **pad, **sticky)
@@ -71,17 +74,3 @@ class Keypad(ttk.Frame):
         """
         for button in self.buttons:
             button.configure(cnf, **kwargs)
-
-
-if __name__ == '__main__':
-    sticky = {'sticky': 'NSEW'}
-    keys = list('789456123 0.')  # = ['7','8','9',...]
-
-    root = tk.Tk()
-    root.title("Keypad Demo")
-    keypad = Keypad(root, keynames=keys, columns=3)
-    keypad.pack(expand=True, fill=tk.BOTH)
-    keypad['foreground'] = 'red'
-    print(keypad['foreground'])
-    keypad.frame.configure(foreground='blue', background='green')
-    root.mainloop()
