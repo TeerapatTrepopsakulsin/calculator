@@ -11,7 +11,7 @@ class MathOperators(Enum):
     ADD = ['+', '+', '+']
     SUB = ['-', '-', '-']
     POWER = ['^', '^', '**']
-    MOD = ['mod', 'mod(', '%']
+    MOD = ['mod', 'mod(', '%(']
 
     @property
     def expression(self):
@@ -47,9 +47,3 @@ class MathFunctions(Enum):
         for _function in MathFunctions:
             if _function.value[0] == item:
                 return _function.value[1:]
-
-
-if __name__ == '__main__':
-    item = 'mod'
-    a = MathFunctions.get(item)
-    print(a)
