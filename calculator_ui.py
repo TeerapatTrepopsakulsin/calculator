@@ -1,4 +1,5 @@
 """UI for calculator programme"""
+import math
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 from winsound import MessageBeep, SND_NOWAIT
@@ -84,12 +85,17 @@ class CalculatorUI(tk.Tk):
     def handle_his_click(self, *args):
         self.history_box.configure(state='normal')
 
-        history_cal = self.history_box.get('current linestart', 'current lineend')
-        if history_cal and history_cal[:3] == ' = ':
-            history_cal = history_cal[3:]
-        if history_cal:
-            self.label.configure(text=history_cal)
-            self.controller.handle_his_click(history_cal)
+        cur_row = float(self.history_box.index('current')) // 1
+        history_index = self.controller.get_len_history() - math.ceil(cur_row / 3)
+        history_type = cur_row % 3
+
+        history = self.controller.recall_history(history_index)
+        if history_type == 2:       # recall equation
+            self.label.configure(text=history[0])
+            self.controller.handle_his_click(history[2])
+        elif history_type == 0:     # recall result
+            self.label.configure(text=history[1])
+            self.controller.handle_his_click(history[1])
 
         self.history_box.configure(state='disabled')
 
