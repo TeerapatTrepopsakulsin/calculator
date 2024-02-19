@@ -8,7 +8,7 @@ class Keypad(ttk.Frame):
     def __init__(self, parent, keynames=[], columns=1, **kwargs):
         super().__init__(parent, **kwargs)
         # keynames and columns
-        self.frame = self
+        self.frame = parent
         self.keynames = keynames
         self.buttons = []
         self.init_components(columns)
@@ -40,8 +40,6 @@ class Keypad(ttk.Frame):
             frame.rowconfigure(i, weight=1)
         for i in range(columns):
             frame.columnconfigure(i, weight=1)
-
-        return frame
 
     def bind(self, sequence, func, add=''):
         """Bind an event handler to an event sequence."""
