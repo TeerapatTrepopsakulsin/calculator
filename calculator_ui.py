@@ -81,6 +81,22 @@ class CalculatorUI(tk.Tk):
             self.history_box.insert(0.0, history_text)
             self.history_box.configure(state='disabled')
 
+    def handle_his_click(self, event: tk.Event, *args):
+        self.history_box.configure(state='normal')
+        print()
+        print(event)
+        print(event.widget['x'])
+        self.history_box.focus_set()
+        self.history_box.getint(5)
+        try:
+            print('index')
+            a = self.history_box.get(1.0, 'sel.first')
+
+        except tk.TclError:
+            print('except')
+        # self.label['text'] = self.history_box.get()
+        self.history_box.configure(state='disabled')
+
     def init_components(self):
         """Create components and layout the UI."""
         font = {'font': ('Georgia', 21)}
@@ -128,15 +144,31 @@ class CalculatorUI(tk.Tk):
         self.function.set('Functions')
 
         # scrolledText
-        self.history_box = scrolledtext.ScrolledText(self,height=5, width=10, font=('Segoe UI Black', 21), state='disabled')
+        self.history_box = scrolledtext.ScrolledText(self, height=5, width=10, font=('Segoe UI Black', 21), state='disabled')
+        self.history_box.bind('<Button-1>', self.handle_his_click)
         self.history_box.grid(row=0, column=0, columnspan=3, **sticky)
 
         # fill the window
-        for i in range(5):
-            self.rowconfigure(i, weight=1)
-        for i in range(3):
-            self.columnconfigure(i, weight=1)
+        for row in range(5):
+            self.rowconfigure(row, weight=1)
+        for col in range(3):
+            self.columnconfigure(col, weight=1)
 
     def run(self):
         """start the app, wait for events"""
         self.mainloop()
+
+
+if __name__ == '__main__':
+    from itertools import chain
+
+
+    def get_events(widget):
+        return set(chain.from_iterable(widget.bind_class(cls) for cls in widget.bindtags()))
+
+
+    root = tk.Tk()
+    a = get_events(scrolledtext.ScrolledText())
+    for i in a:
+        print(i)
+    root.destroy()
