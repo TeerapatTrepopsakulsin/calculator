@@ -83,6 +83,10 @@ class CalculatorUI(tk.Tk):
             self.history_box.configure(state='disabled')
 
     def handle_his_click(self, *args):
+        """Method which executed when clicking in the history box.
+        Recall any input or result in the history box (without the "=")
+        to the label by clicking on it
+        """
         self.history_box.configure(state='normal')
 
         cur_row = float(self.history_box.index('current')) // 1
