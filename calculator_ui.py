@@ -81,20 +81,16 @@ class CalculatorUI(tk.Tk):
             self.history_box.insert(0.0, history_text)
             self.history_box.configure(state='disabled')
 
-    def handle_his_click(self, event: tk.Event, *args):
+    def handle_his_click(self, *args):
         self.history_box.configure(state='normal')
-        print()
-        print(event)
-        print(event.widget['x'])
-        self.history_box.focus_set()
-        self.history_box.getint(5)
-        try:
-            print('index')
-            a = self.history_box.get(1.0, 'sel.first')
 
-        except tk.TclError:
-            print('except')
-        # self.label['text'] = self.history_box.get()
+        history_cal = self.history_box.get('current linestart', 'current lineend')
+        if history_cal and history_cal[:3] == ' = ':
+            history_cal = history_cal[3:]
+        if history_cal:
+            self.label.configure(text=history_cal)
+            self.controller.handle_his_click(history_cal)
+
         self.history_box.configure(state='disabled')
 
     def init_components(self):
@@ -157,18 +153,3 @@ class CalculatorUI(tk.Tk):
     def run(self):
         """start the app, wait for events"""
         self.mainloop()
-
-
-if __name__ == '__main__':
-    from itertools import chain
-
-
-    def get_events(widget):
-        return set(chain.from_iterable(widget.bind_class(cls) for cls in widget.bindtags()))
-
-
-    root = tk.Tk()
-    a = get_events(scrolledtext.ScrolledText())
-    for i in a:
-        print(i)
-    root.destroy()

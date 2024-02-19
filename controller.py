@@ -34,6 +34,9 @@ class Controller:
         result = self.calculator.evaluate()
         return result
 
+    def handle_his_click(self, *args):
+        self.calculator.for_eval = list(*args)
+
     def get_last_history(self):
         last_history = self.calculator.history_sys[-1]
         last_history_text = '\n' + last_history[0] + '\n = ' + last_history[1] + '\n'
