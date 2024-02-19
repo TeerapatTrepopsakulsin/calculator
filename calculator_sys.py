@@ -7,7 +7,7 @@ class HistorySystem:
     """CLass for storing the calculating history"""
     def __init__(self):
         self.name = 'History'
-        self.history = []
+        self.history = []   # [equation, result, for_eval]
 
     def clear(self):
         """Clear history."""
@@ -39,7 +39,7 @@ class CalculatingSystem:
         except Exception:
             return ''
         self.result = f'{result:.12g}'
-        self.history_sys.history.append([self.equation, self.result])
+        self.history_sys.history.append([self.equation, self.result, self.for_eval])
         self.for_eval = list(f'{result:.12g}')
         return f'{result:.12g}'
 
