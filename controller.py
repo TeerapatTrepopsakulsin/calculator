@@ -41,3 +41,9 @@ class Controller:
         last_history = self.calculator.history_sys[-1]
         last_history_text = '\n' + last_history[0] + '\n = ' + last_history[1] + '\n'
         return last_history_text
+
+    def recall_history(self, index):
+        return self.calculator.history_sys[index]
+
+    def get_len_history(self):
+        return len(self.calculator.history_sys.history)
